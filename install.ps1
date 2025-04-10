@@ -1,68 +1,51 @@
-# Configuración inicial
+# Permitir scripts sin restricciones solo para esta sesión
 Set-ExecutionPolicy Bypass -Scope Process -Force
-Write-Host "🚀 Iniciando instalación automática..." -ForegroundColor Cyan
 
-# Función genérica para descargar e instalar
-function Descargar-E-instalar {
+# Lista de apps a instalar con winget
+$apps = @(
+    @{ id = "RARLab.WinRAR"; nombre = "WinRAR" },
+    @{ id = "Google.Chrome"; nombre = "Google Chrome" },
+    @{ id = "Adobe.Acrobat.Reader.64-bit"; nombre = "Adobe Reader" },
+    @{ id = "VideoLAN.VLC"; nombre = "VLC Media Player" },
+    @{ id = "AnyDeskSoftwareGmbH.AnyDesk"; nombre = "AnyDesk" },
+    @{ id = "Fortinet.FortiClientVPN"; nombre = "FortiClient VPN" },
+    @{ id = "Microsoft.Teams"; nombre = "Microsoft Teams" }
+)
+
+# Función para instalar con progreso
+function Instalar-App {
     param (
-        [string]$nombre,
-        [string]$url,
-        [string]$archivo
+        [string]$id,
+        [string]$nombre
     )
 
+    Write-Host "📦 Instalando $nombre..." -ForegroundColor Cyan
     try {
-        $ruta = "$env:TEMP\$archivo"
-        Write-Host "⬇️ Descargando $nombre..."
-        Invoke-WebRequest -Uri $url -OutFile $ruta
-        Write-Host "🚀 Instalando $nombre..."
-        Start-Process -FilePath $ruta -ArgumentList "/S" -Wait
-        Remove-Item $ruta -Force
-        Write-Host "✅ $nombre instalado.`n" -ForegroundColor Green
-    } catch {
-       Write-Host "❌ Error al instalar ${nombre} : $_" -ForegroundColor Red
-
-
+        winget install --id "$id" --silent --accept-package-agreements --accept-source-agreements -h -e
+        Write-Host "✅ $nombre instalado correctamente." -ForegroundColor Green
+    }
+    catch {
+        Write-Host "❌ Error al instalar ${nombre}: $_" -ForegroundColor Red
     }
 }
 
-# WinRAR
-Descargar-E-instalar -nombre "WinRAR" `
-    -url "https://www.rarlab.com/rar/winrar-x64-621.exe" `
-    -archivo "winrar.exe"
+# Instalar todas las apps
+foreach ($app in $apps) {
+    Instalar-App -id $app.id -nombre $app.nombre
+}
 
-# Google Chrome
-Descargar-E-instalar -nombre "Google Chrome" `
-    -url "https://dl.google.com/chrome/install/latest/chrome_installer.exe" `
-    -archivo "chrome_installer.exe"
+# 🔽 INSTALACIÓN NITRO DESDE GITHUB RELEASE
+$nitroUrl = "https://github.com/Fortu27/autoinstalador_windows/releases/download/v1.0.0/Nitro.Pro.10.5.7.32.-.x64.exe"
+$nitroPath = "$env:TEMP\nitro_installer.exe"
 
-# Adobe Reader
-Descargar-E-instalar -nombre "Adobe Reader" `
-    -url "https://ardownload2.adobe.com/pub/adobe/reader/win/AcrobatDC/2300820414/AcroRdrDC2300820414_en_US.exe" `
-    -archivo "adobe_reader.exe"
-
-# VLC
-Descargar-E-instalar -nombre "VLC Player" `
-    -url "https://get.videolan.org/vlc/3.0.20/win64/vlc-3.0.20-win64.exe" `
-    -archivo "vlc.exe"
-
-# AnyDesk
-Descargar-E-instalar -nombre "AnyDesk" `
-    -url "https://download.anydesk.com/AnyDesk.exe" `
-    -archivo "anydesk.exe"
-
-# Microsoft Teams (opcional)
-Descargar-E-instalar -nombre "Microsoft Teams" `
-    -url "https://statics.teams.cdn.office.net/production-windows-x64/enterprise/webview2/lkg/MSTeams-x64.msix" `
-    -archivo "teams.msix"
-
-# FortiClient VPN (opcional)
-Descargar-E-instalar -nombre "FortiClient VPN" `
-    -url "https://filestore.fortinet.com/forticlient/windows/forticlient_vpn_7.0.8.0427_x64.exe" `
-    -archivo "forticlient.exe"
-
-# Nitro PDF Pro (desde OneDrive – reemplazá el link abajo)
-$nitroUrl = "https://datastarargentina-my.sharepoint.com/:u:/g/personal/mfortunato_datastar_com_ar/EVe090W8oPZGvqCRCyqsTgkBn49jtcEnPkXOpKkqKWeeIQ?e=LKIRBD"
-Descargar-E-instalar -nombre "Nitro Pro" -url $nitroUrl -archivo "nitropro.exe"
-
-Write-Host "🎉 Instalación finalizada." -ForegroundColor Cyan
+Write-Host "`n📥 Descargando Nitro Pro desde $nitroUrl..." -ForegroundColor Cyan
+try {
+    Invoke-WebRequest -Uri $nitroUrl -OutFile $nitroPath
+    Write-Host "🚀 Ejecutando instalador de Nitro Pro..." -ForegroundColor Yellow
+    Start-Process $nitroPath -ArgumentList "/quiet" -Wait
+    Write-Host "✅ Nitro Pro instalado correctamente." -ForegroundColor Green
+}
+catch {
+    Write-Host "❌ Error al instalar Nitro Pro: $_" -ForegroundColor Red
+}
 
