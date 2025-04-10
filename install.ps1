@@ -1,89 +1,45 @@
-Write-Host "🚀 Instalador automatico iniciado..." -ForegroundColor Cyan
+# Instalador automático de aplicaciones 
 
-function Instalar-App($nombre, $id) {
-    Write-Host "🔧 Instalando $nombre..."
-    try {
-        winget install --id=$id -e --silent
-    } catch {
-        Write-Host "❌ Error instalando $nombre con winget. Verificar si el paquete existe." -ForegroundColor Red
+# Lista de apps a instalar con Winget
+$apps = @(
+    @{ nombre = "Google Chrome"; id = "Google.Chrome" },
+    @{ nombre = "WinRAR"; id = "RARLab.WinRAR" },
+    @{ nombre = "Adobe Acrobat Reader"; id = "Adobe.Acrobat.Reader.64-bit" },
+    @{ nombre = "AnyDesk"; id = "AnyDeskSoftwareGmbH.AnyDesk" },
+    @{ nombre = "VLC Media Player"; id = "VideoLAN.VLC" },
+    @{ nombre = "Microsoft Teams"; id = "Microsoft.Teams" },
+    @{ nombre = "FortiClient VPN"; id = "Fortinet.FortiClientVPN" }
+)
+
+# Función para instalar con winget
+function Instalar-AppWinget($nombre, $id) {
+    Write-Host "⬇️ Instalando $nombre..."
+    $resultado = winget install --id $id -e --silent --accept-package-agreements --accept-source-agreements
+    if ($LASTEXITCODE -eq 0) {
+        Write-Host "✅ $nombre instalado correctamente.`n"
+    } else {
+        Write-Host "❌ Error al instalar $nombre.`n"
     }
 }
 
-# WinRAR
-Instalar-App "WinRAR" "RARLab.WinRAR"
-
-# Google Chrome
-Instalar-App "Google Chrome" "Google.Chrome"
-
-# Adobe Acrobat Reader
-Instalar-App "Adobe Acrobat Reader" "Adobe.Acrobat.Reader.64-bit"
-
-# VLC Media Player
-Instalar-App "VLC Media Player" "VideoLAN.VLC"
-
-# FortiClient VPN
-Instalar-App "FortiClient VPN" "Fortinet.FortiClientVPN"
-
-# Microsoft Teams
-Instalar-App "Microsoft Teams" "Microsoft.Teams"
-
-# AnyDesk (descarga directa)
-$anydeskUrl = "https://download.anydesk.com/AnyDesk.exe"
-$anydeskPath = "$env:TEMP\AnyDesk.exe"
-Write-Host "⬇️ Descargando AnyDesk desde su web..."
-Invoke-WebRequest -Uri $anydeskUrl -OutFile $anydeskPath
-Write-Host "💻 Ejecutando instalador de AnyDesk..."
-Start-Process $anydeskPath -Wait
-
-Write-Host "🚀 Instalador automático iniciado..." -ForegroundColor Cyan
-
-function Instalar-App($nombre, $id) {
-    Write-Host "🔧 Instalando $nombre..."
-    try {
-        winget install --id=$id -e --silent
-    } catch {
-        Write-Host "❌ Error instalando $nombre con winget." -ForegroundColor Red
-    }
+# Instalación de cada app con Winget
+foreach ($app in $apps) {
+    Instalar-AppWinget -nombre $app.nombre -id $app.id
 }
 
-# WinRAR
-Instalar-App "WinRAR" "RARLab.WinRAR"
+# 🔥 Instalación especial: Nitro Pro (fuera de winget)
+$nitroUrl = "https://github.com/Fortu27/autoinstalador_windows/releases/download/v1.0.0/Nitro.Pro.10.5.7.32.-.x64.exe"
+$nitroPath = "$env:TEMP\NitroProInstaller.exe"
 
-# Google Chrome
-Instalar-App "Google Chrome" "Google.Chrome"
-
-# Adobe Acrobat Reader
-Instalar-App "Adobe Acrobat Reader" "Adobe.Acrobat.Reader.64-bit"
-
-# VLC Media Player
-Instalar-App "VLC Media Player" "VideoLAN.VLC"
-
-# FortiClient VPN
-Instalar-App "FortiClient VPN" "Fortinet.FortiClientVPN"
-
-# AnyDesk (descarga directa)
-$anydeskUrl = "https://download.anydesk.com/AnyDesk.exe"
-$anydeskPath = "$env:TEMP\AnyDesk.exe"
-Write-Host "⬇️ Descargando AnyDesk..."
-Invoke-WebRequest -Uri $anydeskUrl -OutFile $anydeskPath
-Write-Host "💻 Instalando AnyDesk..."
-Start-Process $anydeskPath -Wait
-
-# Microsoft Teams
-Instalar-App "Microsoft Teams" "Microsoft.Teams"
-
-# Nitro PDF Pro desde recurso compartido de red
-$nitroPath = "\\10.0.1.19\Acceso_Publico\Software - Programas\Nitro Pro\Nitro Pro 10.5.7.32 - x64.exe"
-
-if (Test-Path $nitroPath) {
-    Write-Host "💻 Ejecutando Nitro Pro desde recurso de red..."
-    Start-Process $nitroPath -ArgumentList "/S" -Wait
-} else {
-    Write-Host "❌ No se encontró Nitro Pro en la ruta de red: $nitroPath" -ForegroundColor Red
+Write-Host "📦 Descargando Nitro Pro desde GitHub..."
+try {
+    Invoke-WebRequest -Uri $nitroUrl -OutFile $nitroPath -UseBasicParsing
+    Write-Host "📥 Instalando Nitro Pro..."
+    Start-Process $nitroPath -ArgumentList "/quiet" -Wait
+    Write-Host "✅ Nitro Pro instalado correctamente.`n"
+} catch {
+    Write-Host "❌ Error al instalar Nitro Pro: $($_.Exception.Message)`n"
 }
 
-Write-Host "`n✅ Todo instalado. Reiniciá si algo no funciona bien." -ForegroundColor Green
+Write-Host "`n🎉 Instalación completa. Listo para usar la PC como un campeón."
 
-
-
-Write-Host "`n✅ Todo instalado. Reinicia si algo no funciona bien." -ForegroundColor Green
