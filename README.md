@@ -1,12 +1,10 @@
-# 🛠️ Autoinstalador Windows 
+# Autoinstalador Windows 
 
-Este script en PowerShell instala automáticamente las aplicaciones esenciales para cualquier equipo nuevo en pocos minutos. Ideal para entornos sin Intune, técnicos tercerizados o simplemente para no perder tiempo reinstalando todo.
+Este script en PowerShell instala automáticamente las aplicaciones esenciales.
 
 ---
 
-## ⚙️ ¿Qué instala?
-
-Con `winget`:
+## ¿Qué instala?
 
 - ✅ Google Chrome  
 - ✅ WinRAR  
@@ -18,15 +16,13 @@ Con `winget`:
 
 Y además:
 
-- ✅ **Nitro Pro 10.5.7.32 (x64)** desde GitHub Releases
+- ✅ **Nitro Pro** desde GitHub Releases (El Serial no lo agregue por temas de seguridad)
 
 ---
 
-## 🚀 ¿Cómo se usa?
+## ¿Cómo se usa?
 
 ### 1. Abrí PowerShell **como administrador**
-
-Presioná `Win + X` → "Windows PowerShell (Admin)"
 
 ### 2. Ejecutá esto:
 
