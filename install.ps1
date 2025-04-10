@@ -19,7 +19,8 @@ function Descargar-E-instalar {
         Remove-Item $ruta -Force
         Write-Host "✅ $nombre instalado.`n" -ForegroundColor Green
     } catch {
-        Write-Host "❌ Error al instalar ${nombre}: $_" -ForegroundColor Red
+       Write-Host "❌ Error al instalar ${nombre} : $_" -ForegroundColor Red
+
 
     }
 }
