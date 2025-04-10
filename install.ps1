@@ -15,28 +15,29 @@ Instalar-App "WinRAR" "RARLab.WinRAR"
 # Google Chrome
 Instalar-App "Google Chrome" "Google.Chrome"
 
-# Adobe Reader
+# Adobe Acrobat Reader
 Instalar-App "Adobe Acrobat Reader" "Adobe.Acrobat.Reader.64-bit"
 
 # VLC Media Player
 Instalar-App "VLC Media Player" "VideoLAN.VLC"
 
-# Nitro PDF Pro
-Instalar-App "Nitro PDF Pro" "NitroSoftware.NitroPro"
-
-
-# FortiClient VPN (de Fortinet)
+# FortiClient VPN
 Instalar-App "FortiClient VPN" "Fortinet.FortiClientVPN"
 
-# AnyDesk (por descarga directa, ya que winget no lo encuentra)
+# AnyDesk (descarga directa)
 $anydeskUrl = "https://download.anydesk.com/AnyDesk.exe"
 $anydeskPath = "$env:TEMP\AnyDesk.exe"
-
 Write-Host "⬇️ Descargando AnyDesk desde su web..."
 Invoke-WebRequest -Uri $anydeskUrl -OutFile $anydeskPath
-
 Write-Host "💻 Ejecutando instalador de AnyDesk..."
 Start-Process $anydeskPath -Wait
 
-Write-Host "`n✅ Todo instalado. Reiniciá si algo no funciona bien." -ForegroundColor Green
+# Nitro PDF Pro (descarga directa)
+$nitroUrl = "https://install.nitropdf.com/professional_14.36.1.0/en/nitro_pro14.exe"
+$nitroPath = "$env:TEMP\nitro_pro14.exe"
+Write-Host "⬇️ Descargando Nitro PDF Pro desde su web..."
+Invoke-WebRequest -Uri $nitroUrl -OutFile $nitroPath
+Write-Host "💻 Ejecutando instalador de Nitro PDF Pro..."
+Start-Process $nitroPath -ArgumentList "/S" -Wait
 
+Write-Host "`n✅ Todo instalado. Reiniciá si algo no funciona bien." -ForegroundColor Green
