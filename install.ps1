@@ -1,66 +1,66 @@
-# Instalador automático de aplicaciones 
+# Configuración inicial
+Set-ExecutionPolicy Bypass -Scope Process -Force
+Write-Host "🚀 Iniciando instalación automática..." -ForegroundColor Cyan
 
-# Lista de apps a instalar con Winget
-$apps = @(
-    @{ nombre = "Google Chrome"; id = "Google.Chrome" },
-    @{ nombre = "WinRAR"; id = "RARLab.WinRAR" },
-    @{ nombre = "Adobe Acrobat Reader"; id = "Adobe.Acrobat.Reader.64-bit" },
-    @{ nombre = "AnyDesk"; id = "AnyDeskSoftwareGmbH.AnyDesk" },
-    @{ nombre = "VLC Media Player"; id = "VideoLAN.VLC" },
-    @{ nombre = "Microsoft Teams"; id = "Microsoft.Teams" },
-    @{ nombre = "FortiClient VPN"; id = "Fortinet.FortiClientVPN" }
-)
+# Función genérica para descargar e instalar
+function Descargar-E-instalar {
+    param (
+        [string]$nombre,
+        [string]$url,
+        [string]$archivo
+    )
 
-# Función para instalar con winget
-function Instalar-AppWinget($nombre, $id) {
-    Write-Host "⬇️ Instalando $nombre..."
-    $resultado = winget install --id $id -e --silent --accept-package-agreements --accept-source-agreements
-    if ($LASTEXITCODE -eq 0) {
-        Write-Host "✅ $nombre instalado correctamente.`n"
-    } else {
-        Write-Host "❌ Error al instalar $nombre.`n"
-    }
-}
-
-# Instalación de cada app con Winget
-foreach ($app in $apps) {
-    Instalar-AppWinget -nombre $app.nombre -id $app.id
-}
-
-$claveCorrecta = 'D4t4st4R$$'  # ← Cambiá esto por tu contraseña real
-$intentosMaximos = 3
-$intento = 1
-$autenticado = $false
-
-while ($intento -le $intentosMaximos) {
-    Write-Host "`n🔐 Intento $intento de $intentosMaximos"
-    
     try {
-        $password = Read-Host -AsSecureString "Ingresá la contraseña para ver la clave de Nitro"
-        $passwordTexto = [Runtime.InteropServices.Marshal]::PtrToStringAuto(
-            [Runtime.InteropServices.Marshal]::SecureStringToBSTR($password)
-        )
-
-        if ($passwordTexto -eq $claveCorrecta) {
-            Write-Host "`n✅ Contraseña correcta. Mostrando link de activación..."
-            Write-Host "https://datastarargentina-my.sharepoint.com/:f:/g/personal/mfortunato_datastar_com_ar/EjYWX5qs1e9Fm2zrRCGoRPEB3MqSSe8WGFi4KPFol3DG2g?e=Guhfy0" -ForegroundColor Cyan
-            $autenticado = $true
-            break
-        } else {
-            Write-Host "❌ Contraseña incorrecta." -ForegroundColor Red
-        }
+        $ruta = "$env:TEMP\$archivo"
+        Write-Host "⬇️ Descargando $nombre..."
+        Invoke-WebRequest -Uri $url -OutFile $ruta
+        Write-Host "🚀 Instalando $nombre..."
+        Start-Process -FilePath $ruta -ArgumentList "/S" -Wait
+        Remove-Item $ruta -Force
+        Write-Host "✅ $nombre instalado.`n" -ForegroundColor Green
+    } catch {
+        Write-Host "❌ Error al instalar $nombre: $_" -ForegroundColor Red
     }
-    catch {
-        Write-Host "⚠️ Ocurrió un error al procesar la contraseña. Intentá de nuevo." -ForegroundColor Yellow
-    }
-
-    $intento++
 }
 
-if (-not $autenticado) {
-    Write-Host "`n🚫 Demasiados intentos fallidos. Cerrando el chiringuito..." -ForegroundColor DarkRed
-}
+# WinRAR
+Descargar-E-instalar -nombre "WinRAR" `
+    -url "https://www.rarlab.com/rar/winrar-x64-621.exe" `
+    -archivo "winrar.exe"
 
-       
-Write-Host "`n🎉 Instalación completa. Listo para usar la PC como un campeón."
+# Google Chrome
+Descargar-E-instalar -nombre "Google Chrome" `
+    -url "https://dl.google.com/chrome/install/latest/chrome_installer.exe" `
+    -archivo "chrome_installer.exe"
+
+# Adobe Reader
+Descargar-E-instalar -nombre "Adobe Reader" `
+    -url "https://ardownload2.adobe.com/pub/adobe/reader/win/AcrobatDC/2300820414/AcroRdrDC2300820414_en_US.exe" `
+    -archivo "adobe_reader.exe"
+
+# VLC
+Descargar-E-instalar -nombre "VLC Player" `
+    -url "https://get.videolan.org/vlc/3.0.20/win64/vlc-3.0.20-win64.exe" `
+    -archivo "vlc.exe"
+
+# AnyDesk
+Descargar-E-instalar -nombre "AnyDesk" `
+    -url "https://download.anydesk.com/AnyDesk.exe" `
+    -archivo "anydesk.exe"
+
+# Microsoft Teams (opcional)
+Descargar-E-instalar -nombre "Microsoft Teams" `
+    -url "https://statics.teams.cdn.office.net/production-windows-x64/enterprise/webview2/lkg/MSTeams-x64.msix" `
+    -archivo "teams.msix"
+
+# FortiClient VPN (opcional)
+Descargar-E-instalar -nombre "FortiClient VPN" `
+    -url "https://filestore.fortinet.com/forticlient/windows/forticlient_vpn_7.0.8.0427_x64.exe" `
+    -archivo "forticlient.exe"
+
+# Nitro PDF Pro (desde OneDrive – reemplazá el link abajo)
+$nitroUrl = "https://datastarargentina-my.sharepoint.com/:u:/g/personal/mfortunato_datastar_com_ar/EVe090W8oPZGvqCRCyqsTgkBn49jtcEnPkXOpKkqKWeeIQ?e=LKIRBD"
+Descargar-E-instalar -nombre "Nitro Pro" -url $nitroUrl -archivo "nitropro.exe"
+
+Write-Host "🎉 Instalación finalizada." -ForegroundColor Cyan
 
