@@ -32,12 +32,15 @@ Invoke-WebRequest -Uri $anydeskUrl -OutFile $anydeskPath
 Write-Host "💻 Ejecutando instalador de AnyDesk..."
 Start-Process $anydeskPath -Wait
 
-# Nitro PDF Pro (descarga directa)
-$nitroUrl = "https://install.nitropdf.com/professional_14.36.1.0/en/nitro_pro14.exe"
+# Nitro PDF Pro (descarga directa desde mirror)
+$nitroUrl = "https://download.gonitro.com/Installs/Nitro_Pro_14_x64_EN.exe"
 $nitroPath = "$env:TEMP\nitro_pro14.exe"
-Write-Host "⬇️ Descargando Nitro PDF Pro desde su web..."
+
+Write-Host "⬇️ Descargando Nitro PDF Pro desde mirror..."
 Invoke-WebRequest -Uri $nitroUrl -OutFile $nitroPath
+
 Write-Host "💻 Ejecutando instalador de Nitro PDF Pro..."
 Start-Process $nitroPath -ArgumentList "/S" -Wait
+
 
 Write-Host "`n✅ Todo instalado. Reiniciá si algo no funciona bien." -ForegroundColor Green
