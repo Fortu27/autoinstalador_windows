@@ -28,7 +28,7 @@ foreach ($app in $apps) {
 }
 
 # 🔐 Mostrar link para clave de activación de Nitro Pro (requiere login)
-$linkClave = "https://github.com/Fortu27/autoinstalador_windows/releases/download/v1.0.0/Nitro.Pro.10.5.7.32.-.x64.exe" 
+$linkClave = "https://datastarargentina-my.sharepoint.com/:f:/g/personal/mfortunato_datastar_com_ar/EjYWX5qs1e9Fm2zrRCGoRPEB3MqSSe8WGFi4KPFol3DG2g?e=AUhkKY" 
 
 Write-Host "`n🔐 Para activar Nitro Pro, accedé al siguiente link con tu cuenta corporativa:"
 Write-Host $linkClave -ForegroundColor Cyan
