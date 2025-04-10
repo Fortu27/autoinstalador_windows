@@ -13,7 +13,8 @@ function Instalar-Con-Winget {
         Write-Host "✅ $nombre instalado correctamente." -ForegroundColor Green
     }
     catch {
-        Write-Host "❌ Error al instalar $nombre: $_" -ForegroundColor Red
+        Write-Host "❌ Error al instalar ${nombre}: $_" -ForegroundColor Red
+
     }
 }
 
