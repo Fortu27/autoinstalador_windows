@@ -27,37 +27,24 @@ foreach ($app in $apps) {
     Instalar-AppWinget -nombre $app.nombre -id $app.id
 }
 
-# 🔥 Instalación especial: Nitro Pro (fuera de winget)
-$nitroUrl = "https://github.com/Fortu27/autoinstalador_windows/releases/download/v1.0.0/Nitro.Pro.10.5.7.32.-.x64.exe"
-$nitroPath = "$env:TEMP\NitroProInstaller.exe"
-
-Write-Host "📦 Descargando Nitro Pro desde GitHub..."
-try {
-    Invoke-WebRequest -Uri $nitroUrl -OutFile $nitroPath -UseBasicParsing
-    Write-Host "📥 Instalando Nitro Pro..."
-    Start-Process $nitroPath -ArgumentList "/quiet" -Wait
-    Write-Host "✅ Nitro Pro instalado correctamente.`n"
-} catch {
-    Write-Host "❌ Error al instalar Nitro Pro: $($_.Exception.Message)`n"
-}
-
-# 🔒 Activación de Nitro Pro desde link privado
-$activarNitroUrl = "https://datastarargentina-my.sharepoint.com/:t:/g/personal/mfortunato_datastar_com_ar/EVZBLT3Q2UJJpNAc0aKroJ0BBZm6H5zBwbtzj_g2Xg8R-A?e=fJrYKY"  # ← Pegá acá tu link real
+# 🔐 Mostrar clave de activación de Nitro Pro (manual)
+$activarNitroUrl = "https://github.com/Fortu27/autoinstalador_windows/releases/download/v1.0.0/Nitro.Pro.10.5.7.32.-.x64.exe"  # <-- Pegá acá tu link real al .txt
 $clavePath = "$env:TEMP\nitro_key.txt"
 
 try {
-    Write-Host "`n🔐 Descargando clave de activación de Nitro Pro..."
+    Write-Host "`n📥 Descargando clave de activación de Nitro Pro..."
     Invoke-WebRequest -Uri $activarNitroUrl -OutFile $clavePath
 
     $clave = Get-Content $clavePath
-    Write-Host "🔑 Activando Nitro Pro..."
+    Write-Host "`n📝 Clave de activación descargada:"
+    Write-Host "---------------------------------"
+    Write-Host $clave -ForegroundColor Yellow
+    Write-Host "---------------------------------"
+    Write-Host "⚠️ Ingresala manualmente en Nitro Pro."
     
-    # Reemplazá esta línea con el comando real de activación
-    & "C:\Program Files\Nitro\Pro 10\NitroPDF.exe" /SN:$clave
-
     Remove-Item $clavePath -Force
 } catch {
-    Write-Host "⚠️ No se pudo activar Nitro Pro automáticamente. Verificá el acceso al archivo de licencia."
+    Write-Host "❌ No se pudo descargar la clave. Verificá el link o los permisos."
 }
 
 
