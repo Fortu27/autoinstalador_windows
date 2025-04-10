@@ -15,5 +15,5 @@ Este script instala automáticamente los programas básicos para PCs nuevas:
 
 ```powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force
-iwr -useb https://raw.githubusercontent.com/Fortu27/autoinstalador-windows/main/install.ps1 | iex
+iwr -useb https://raw.githubusercontent.com/Fortu27/autoinstalador_windows/main/install.ps1 | iex
 
