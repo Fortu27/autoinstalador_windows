@@ -27,25 +27,12 @@ foreach ($app in $apps) {
     Instalar-AppWinget -nombre $app.nombre -id $app.id
 }
 
-# 🔐 Mostrar clave de activación de Nitro Pro (manual)
-$activarNitroUrl = "https://github.com/Fortu27/autoinstalador_windows/releases/download/v1.0.0/Nitro.Pro.10.5.7.32.-.x64.exe"  # <-- Pegá acá tu link real al .txt
-$clavePath = "$env:TEMP\nitro_key.txt"
+# 🔐 Mostrar link para clave de activación de Nitro Pro (requiere login)
+$linkClave = "https://github.com/Fortu27/autoinstalador_windows/releases/download/v1.0.0/Nitro.Pro.10.5.7.32.-.x64.exe" 
 
-try {
-    Write-Host "`n📥 Descargando clave de activación de Nitro Pro..."
-    Invoke-WebRequest -Uri $activarNitroUrl -OutFile $clavePath
-
-    $clave = Get-Content $clavePath
-    Write-Host "`n📝 Clave de activación descargada:"
-    Write-Host "---------------------------------"
-    Write-Host $clave -ForegroundColor Yellow
-    Write-Host "---------------------------------"
-    Write-Host "⚠️ Ingresala manualmente en Nitro Pro."
-    
-    Remove-Item $clavePath -Force
-} catch {
-    Write-Host "❌ No se pudo descargar la clave. Verificá el link o los permisos."
-}
+Write-Host "`n🔐 Para activar Nitro Pro, accedé al siguiente link con tu cuenta corporativa:"
+Write-Host $linkClave -ForegroundColor Cyan
+Write-Host "⚠️ Una vez dentro, copiá la clave y activá Nitro manualmente desde el programa."
 
 
 Write-Host "`n🎉 Instalación completa. Listo para usar la PC como un campeón."
