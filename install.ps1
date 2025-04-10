@@ -27,20 +27,33 @@ foreach ($app in $apps) {
     Instalar-AppWinget -nombre $app.nombre -id $app.id
 }
 
-# 🔒 Solicitar contraseña para ver la clave de activación
-$claveCorrecta = 'D4t4st4R$$'  # ← Cambiala por la contraseña real
+$claveCorrecta = 'D4t4st4R$$'  # Cambiá esto por la contraseña real
+$intentosMaximos = 3
+$intento = 1
+$autenticado = $false
 
-$password = Read-Host -AsSecureString "🔐 Ingresá la contraseña para ver la clave de Nitro"
-$passwordTexto = [Runtime.InteropServices.Marshal]::PtrToStringAuto(
-    [Runtime.InteropServices.Marshal]::SecureStringToBSTR($password)
-)
+while ($intento -le $intentosMaximos -and -not $autenticado) {
+    Write-Host "`n🔐 Intento $intento de $intentosMaximos"
+    $password = Read-Host -AsSecureString "Ingresá la contraseña para ver la clave de Nitro"
+    $passwordTexto = [Runtime.InteropServices.Marshal]::PtrToStringAuto(
+        [Runtime.InteropServices.Marshal]::SecureStringToBSTR($password)
+    )
 
-if ($passwordTexto -eq $claveCorrecta) {
-    Write-Host "`n✅ Contraseña correcta. Mostrando link de activación..."
-    Write-Host "https://datastarargentina-my.sharepoint.com/:f:/r/personal/mfortunato_datastar_com_ar/Documents/Activador%20Nitro%20Pro?csf=1&web=1&e=caDnCJ" -ForegroundColor Cyan
-    Write-Host "`n⚠️ Ingresá con tu cuenta y buscá la clave para activación de Nitro."
-} else {
-    Write-Host "`n❌ Contraseña incorrecta. Hablar con Soporteinterno" -ForegroundColor Red
+    if ($passwordTexto -eq $claveCorrecta) {
+        Write-Host "`n✅ Contraseña correcta. Mostrando link de activación..."
+        Write-Host "https://datastarargentina-my.sharepoint.com/:f:/g/personal/mfortunato_datastar_com_ar/EjYWX5qs1e9Fm2zrRCGoRPEB3MqSSe8WGFi4KPFol3DG2g?e=qHoiCe" -ForegroundColor Cyan
+        $autenticado = $true
+    } else {
+        Write-Host "❌ Contraseña incorrecta." -ForegroundColor Red
+        if ($intento -lt $intentosMaximos) {
+            Write-Host "⏳ Intentá de nuevo..."
+        }
+        $intento++
+    }
+}
+
+if (-not $autenticado) {
+    Write-Host "`n🚫 Demasiados intentos fallidos. Hablar con Soporte Interno" -ForegroundColor DarkRed
 }
 
 
