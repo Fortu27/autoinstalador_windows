@@ -41,5 +41,25 @@ try {
     Write-Host "❌ Error al instalar Nitro Pro: $($_.Exception.Message)`n"
 }
 
+# 🔒 Activación de Nitro Pro desde link privado
+$activarNitroUrl = "https://datastarargentina-my.sharepoint.com/..."  # ← Pegá acá tu link real
+$clavePath = "$env:TEMP\nitro_key.txt"
+
+try {
+    Write-Host "`n🔐 Descargando clave de activación de Nitro Pro..."
+    Invoke-WebRequest -Uri $activarNitroUrl -OutFile $clavePath
+
+    $clave = Get-Content $clavePath
+    Write-Host "🔑 Activando Nitro Pro..."
+    
+    # Reemplazá esta línea con el comando real de activación
+    & "C:\Program Files\Nitro\Pro 10\NitroPDF.exe" /SN:$clave
+
+    Remove-Item $clavePath -Force
+} catch {
+    Write-Host "⚠️ No se pudo activar Nitro Pro automáticamente. Verificá el acceso al archivo de licencia."
+}
+
+
 Write-Host "`n🎉 Instalación completa. Listo para usar la PC como un campeón."
 
