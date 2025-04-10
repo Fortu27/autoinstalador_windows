@@ -28,7 +28,7 @@ foreach ($app in $apps) {
 }
 
 # 🔐 Mostrar link para clave de activación de Nitro Pro (requiere login)
-$linkClave = "https://datastarargentina-my.sharepoint.com/:f:/g/personal/mfortunato_datastar_com_ar/EjYWX5qs1e9Fm2zrRCGoRPEB3MqSSe8WGFi4KPFol3DG2g?e=AUhkKY" 
+$linkClave = "https://datastarargentina-my.sharepoint.com/:f:/g/personal/mfortunato_datastar_com_ar/EjYWX5qs1e9Fm2zrRCGoRPEBRxeyXrmiiRS0zFTBiAIfeg?e=TtyzfS" 
 
 Write-Host "`n🔐 Para activar Nitro Pro, accedé al siguiente link con tu cuenta corporativa:"
 Write-Host $linkClave -ForegroundColor Cyan
