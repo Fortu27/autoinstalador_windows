@@ -4,26 +4,26 @@ Set-ExecutionPolicy Bypass -Scope Process -Force
 
 # Definimos las opciones del menú
 $opciones = @(
-    @{ Key = "1"; Nombre = "Google Chrome"; Acción = { winget install --id=Google.Chrome -e --silent --accept-package-agreements --accept-source-agreements } },
-    @{ Key = "2"; Nombre = "WinRAR"; Acción = { winget install --id=RARLab.WinRAR -e --silent --accept-package-agreements --accept-source-agreements } },
-    @{ Key = "3"; Nombre = "VLC Media Player"; Acción = { winget install --id=VideoLAN.VLC -e --silent --accept-package-agreements --accept-source-agreements } },
-    @{ Key = "4"; Nombre = "Adobe Reader"; Acción = { winget install --id=Adobe.Acrobat.Reader.64-bit -e --silent --accept-package-agreements --accept-source-agreements } },
-    @{ Key = "5"; Nombre = "AnyDesk"; Acción = {
+    @{ Key = "1"; Nombre = "Google Chrome"; Accion = { winget install --id=Google.Chrome -e --silent --accept-package-agreements --accept-source-agreements } },
+    @{ Key = "2"; Nombre = "WinRAR"; Accion = { winget install --id=RARLab.WinRAR -e --silent --accept-package-agreements --accept-source-agreements } },
+    @{ Key = "3"; Nombre = "VLC Media Player"; Accion = { winget install --id=VideoLAN.VLC -e --silent --accept-package-agreements --accept-source-agreements } },
+    @{ Key = "4"; Nombre = "Adobe Reader"; Accion = { winget install --id=Adobe.Acrobat.Reader.64-bit -e --silent --accept-package-agreements --accept-source-agreements } },
+    @{ Key = "5"; Nombre = "AnyDesk"; Accion = {
         $url="https://download.anydesk.com/AnyDesk.exe"
         $out="$env:TEMP\AnyDesk.exe"
         Invoke-WebRequest $url -OutFile $out
         Start-Process $out -ArgumentList "/silent" -Wait
     } },
-    @{ Key = "6"; Nombre = "FortiClient VPN"; Acción = { winget install --id=Fortinet.FortiClientVPN -e --silent --accept-package-agreements --accept-source-agreements } },
-    @{ Key = "7"; Nombre = "Microsoft Teams"; Acción = { winget install --id=Microsoft.Teams -e --silent --accept-package-agreements --accept-source-agreements } },
-    @{ Key = "8"; Nombre = "Nitro Pro"; Acción = {
+    @{ Key = "6"; Nombre = "FortiClient VPN"; Accion = { winget install --id=Fortinet.FortiClientVPN -e --silent --accept-package-agreements --accept-source-agreements } },
+    @{ Key = "7"; Nombre = "Microsoft Teams"; Accion = { winget install --id=Microsoft.Teams -e --silent --accept-package-agreements --accept-source-agreements } },
+    @{ Key = "8"; Nombre = "Nitro Pro"; Accion = {
         $url="https://github.com/Fortu27/autoinstalador_windows/releases/download/v1.0.0/Nitro.Pro.10.5.7.32.-.x64.exe"
         $out="$env:TEMP\NitroProInstaller.exe"
         Invoke-WebRequest $url -OutFile $out
         Start-Process $out -ArgumentList "/quiet" -Wait
     } },
-    @{ Key = "9"; Nombre = "Instalar todo"; Acción = { $global:instalarTodo = $true } },
-    @{ Key = "0"; Nombre = "Salir"; Acción = { exit } }
+    @{ Key = "9"; Nombre = "Instalar todo"; Accion = { $global:instalarTodo = $true } },
+    @{ Key = "0"; Nombre = "Salir"; Accion = { exit } }
 )
 
 function Mostrar-Menú {
@@ -38,15 +38,15 @@ function Mostrar-Menú {
 # Bucle principal
 do {
     Mostrar-Menú
-    $elección = Read-Host "Elige una opción (0 para salir)"
+    $eleccion = Read-Host "Elige una opción (0 para salir)"
     
-    $seleccion = $opciones | Where-Object Key -EQ $elección
+    $seleccion = $opciones | Where-Object Key -EQ $eleccion
     if ($null -ne $seleccion) {
         if ($seleccion.Key -eq "9") {
             # Instalar todo
             foreach ($opt in $opciones | Where-Object { $_.Key -match '^[1-8]$' }) {
                 Write-Host "`n--- $($opt.Nombre) ---" -ForegroundColor Yellow
-                & $opt.Acción
+                & $opt.Accion
             }
             Write-Host "`n✅ Todas las instalaciones completadas." -ForegroundColor Green
             break
@@ -54,7 +54,7 @@ do {
             break
         } else {
             Write-Host "`n--- Instalando $($seleccion.Nombre) ---" -ForegroundColor Yellow
-            & $seleccion.Acción
+            & $seleccion.Accion
             Read-Host "`nPresioná Enter para volver al menú"
         }
     } else {
@@ -62,3 +62,4 @@ do {
         Start-Sleep -Seconds 1
     }
 } while ($true)
+
