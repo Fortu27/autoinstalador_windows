@@ -27,11 +27,22 @@ foreach ($app in $apps) {
     Instalar-AppWinget -nombre $app.nombre -id $app.id
 }
 
-# 🔐 Mostrar link para clave de activación de Nitro Pro (requiere login)
-$linkClave = "https://datastarargentina-my.sharepoint.com/:f:/g/personal/mfortunato_datastar_com_ar/EjYWX5qs1e9Fm2zrRCGoRPEB8xJvpxnYWE3ZtDgF4UB9Zw?e=i2EIRS"
-Write-Host "`n🔐 Para activar Nitro Pro, accedé al siguiente link con tu cuenta corporativa:"
-Write-Host $linkClave -ForegroundColor Cyan
-Write-Host "⚠️ Una vez dentro, copiá la clave y activá Nitro manualmente desde el programa."
+# 🔒 Solicitar contraseña para ver la clave de activación
+$claveCorrecta = 'D4t4st4R$$'  # ← Cambiala por la contraseña real
+
+$password = Read-Host -AsSecureString "🔐 Ingresá la contraseña para ver la clave de Nitro"
+$passwordTexto = [Runtime.InteropServices.Marshal]::PtrToStringAuto(
+    [Runtime.InteropServices.Marshal]::SecureStringToBSTR($password)
+)
+
+if ($passwordTexto -eq $claveCorrecta) {
+    Write-Host "`n✅ Contraseña correcta. Mostrando link de activación..."
+    Write-Host "https://datastarargentina-my.sharepoint.com/:f:/r/personal/mfortunato_datastar_com_ar/Documents/Activador%20Nitro%20Pro?csf=1&web=1&e=caDnCJ" -ForegroundColor Cyan
+    Write-Host "`n⚠️ Ingresá con tu cuenta y buscá la clave para activación de Nitro."
+} else {
+    Write-Host "`n❌ Contraseña incorrecta. Hablar con Soporteinterno" -ForegroundColor Red
+}
+
 
 
 Write-Host "`n🎉 Instalación completa. Listo para usar la PC como un campeón."
