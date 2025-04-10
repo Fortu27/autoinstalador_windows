@@ -42,7 +42,7 @@ try {
 }
 
 # 🔒 Activación de Nitro Pro desde link privado
-$activarNitroUrl = "https://datastarargentina-my.sharepoint.com/..."  # ← Pegá acá tu link real
+$activarNitroUrl = "https://datastarargentina-my.sharepoint.com/:t:/g/personal/mfortunato_datastar_com_ar/EVZBLT3Q2UJJpNAc0aKroJ0BBZm6H5zBwbtzj_g2Xg8R-A?e=fJrYKY"  # ← Pegá acá tu link real
 $clavePath = "$env:TEMP\nitro_key.txt"
 
 try {
