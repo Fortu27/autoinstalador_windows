@@ -1,6 +1,6 @@
-# Ejecuta este script con permisos de administrador
+# Ejecutá este script como Administrador
 
-# Forzamos política de ejecución para el proceso
+# Permitir ejecución solo en esta sesión
 Set-ExecutionPolicy Bypass -Scope Process -Force
 
 function Instalar-App {
@@ -9,45 +9,62 @@ function Instalar-App {
         [string]$comando
     )
 
+    Write-Host "⬇ Instalando $nombre..." -ForegroundColor Cyan
     try {
-        Write-Host "⬇ Instalando $nombre..." -ForegroundColor Cyan
         Invoke-Expression $comando
-        Write-Host "✅ $nombre instalado correctamente." -ForegroundColor Green
+        Write-Host ("✅ " + $nombre + " instalado correctamente.") -ForegroundColor Green
     }
     catch {
-        Write-Host "❌ Error al instalar ${nombre}: $($_.Exception.Message)" -ForegroundColor Red
+        $msg = $_.Exception.Message
+        Write-Host ("❌ Error al instalar " + $nombre + ": " + $msg) -ForegroundColor Red
     }
 }
 
-# Chrome
+# 1) Google Chrome
 Instalar-App "Google Chrome" 'winget install --id=Google.Chrome -e --accept-package-agreements --accept-source-agreements'
 
-# WinRAR
+# 2) WinRAR
 Instalar-App "WinRAR" 'winget install --id=RARLab.WinRAR -e --accept-package-agreements --accept-source-agreements'
 
-# VLC
+# 3) VLC Media Player
 Instalar-App "VLC Media Player" 'winget install --id=VideoLAN.VLC -e --accept-package-agreements --accept-source-agreements'
 
-# Adobe Reader
+# 4) Adobe Reader
 Instalar-App "Adobe Reader" 'winget install --id=Adobe.Acrobat.Reader.64-bit -e --accept-package-agreements --accept-source-agreements'
 
-# AnyDesk
-Instalar-App "AnyDesk" 'winget install --id=AnyDeskSoftwareGmbH.AnyDesk -e --accept-package-agreements --accept-source-agreements'
+# 5) AnyDesk (descarga directa)
+Write-Host "⬇ Descargando AnyDesk..." -ForegroundColor Cyan
+try {
+    $anydeskUrl = "https://download.anydesk.com/AnyDesk.exe"
+    $anydeskPath = "$env:TEMP\AnyDesk.exe"
+    Invoke-WebRequest -Uri $anydeskUrl -OutFile $anydeskPath
+    Start-Process $anydeskPath -ArgumentList "/silent" -Wait
+    Write-Host "✅ AnyDesk instalado correctamente." -ForegroundColor Green
+}
+catch {
+    $msg = $_.Exception.Message
+    Write-Host ("❌ Error al instalar AnyDesk: " + $msg) -ForegroundColor Red
+}
 
-# FortiClient VPN
+# 6) FortiClient VPN
 Instalar-App "FortiClient VPN" 'winget install --id=Fortinet.FortiClientVPN -e --accept-package-agreements --accept-source-agreements'
 
-# Nitro Pro desde GitHub
-$nitroUrl = "https://github.com/Fortu27/autoinstalador_windows/releases/download/v1.0.0/Nitro.Pro.10.5.7.32.-.x64.exe"
-$nitroPath = "$env:TEMP\NitroProInstaller.exe"
+# 7) Microsoft Teams
+Instalar-App "Microsoft Teams" 'winget install --id=Microsoft.Teams -e --accept-package-agreements --accept-source-agreements'
 
+# 8) Nitro Pro desde GitHub
+Write-Host "`n⬇ Descargando Nitro Pro..." -ForegroundColor Cyan
 try {
-    Write-Host "⬇ Descargando Nitro Pro..." -ForegroundColor Cyan
+    $nitroUrl = "https://github.com/Fortu27/autoinstalador_windows/releases/download/v1.0.0/Nitro.Pro.10.5.7.32.-.x64.exe"
+    $nitroPath = "$env:TEMP\NitroProInstaller.exe"
     Invoke-WebRequest -Uri $nitroUrl -OutFile $nitroPath
     Write-Host "📦 Ejecutando instalador de Nitro Pro..." -ForegroundColor Yellow
-    Start-Process $nitroPath -ArgumentList "/S" -Wait
+    Start-Process $nitroPath -ArgumentList "/quiet" -Wait
     Write-Host "✅ Nitro Pro instalado correctamente." -ForegroundColor Green
 }
 catch {
-    Write-Host "❌ Error al instalar Nitro Pro: $($_.Exception.Message)" -ForegroundColor Red
+    $msg = $_.Exception.Message
+    Write-Host ("❌ Error al instalar Nitro Pro: " + $msg) -ForegroundColor Red
 }
+
+Write-Host "`n🎉 ¡Todas las instalaciones han finalizado!" -ForegroundColor Magenta
