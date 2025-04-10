@@ -21,8 +21,9 @@ Instalar-App "Adobe Acrobat Reader" "Adobe.Acrobat.Reader.64-bit"
 # VLC Media Player
 Instalar-App "VLC Media Player" "VideoLAN.VLC"
 
-# Nitro PDF (ojo: hay varias versiones; esta es Essentials)
-Instalar-App "Nitro PDF" "NitroPDF.NitroPDFProEssentials"
+# Nitro PDF Pro
+Instalar-App "Nitro PDF Pro" "NitroSoftware.NitroPro"
+
 
 # FortiClient VPN (de Fortinet)
 Instalar-App "FortiClient VPN" "Fortinet.FortiClientVPN"
