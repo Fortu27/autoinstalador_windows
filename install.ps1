@@ -1,4 +1,4 @@
-Write-Host "🚀 Instalador automático iniciado..." -ForegroundColor Cyan
+Write-Host "🚀 Instalador automatico iniciado..." -ForegroundColor Cyan
 
 function Instalar-App($nombre, $id) {
     Write-Host "🔧 Instalando $nombre..."
@@ -24,6 +24,9 @@ Instalar-App "VLC Media Player" "VideoLAN.VLC"
 # FortiClient VPN
 Instalar-App "FortiClient VPN" "Fortinet.FortiClientVPN"
 
+# Microsoft Teams
+Instalar-App "Microsoft Teams" "Microsoft.Teams"
+
 # AnyDesk (descarga directa)
 $anydeskUrl = "https://download.anydesk.com/AnyDesk.exe"
 $anydeskPath = "$env:TEMP\AnyDesk.exe"
@@ -32,15 +35,5 @@ Invoke-WebRequest -Uri $anydeskUrl -OutFile $anydeskPath
 Write-Host "💻 Ejecutando instalador de AnyDesk..."
 Start-Process $anydeskPath -Wait
 
-# Nitro PDF Pro (descarga directa desde mirror)
-$nitroUrl = "https://download.gonitro.com/Installs/Nitro_Pro_14_x64_EN.exe"
-$nitroPath = "$env:TEMP\nitro_pro14.exe"
 
-Write-Host "⬇️ Descargando Nitro PDF Pro desde mirror..."
-Invoke-WebRequest -Uri $nitroUrl -OutFile $nitroPath
-
-Write-Host "💻 Ejecutando instalador de Nitro PDF Pro..."
-Start-Process $nitroPath -ArgumentList "/S" -Wait
-
-
-Write-Host "`n✅ Todo instalado. Reiniciá si algo no funciona bien." -ForegroundColor Green
+Write-Host "`n✅ Todo instalado. Reinicia si algo no funciona bien." -ForegroundColor Green
