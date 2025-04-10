@@ -38,6 +38,25 @@ try {
     Invoke-WebRequest -Uri $anydeskUrl -OutFile $anydeskPath
     Write-Host "🚀 Ejecutando instalador de AnyDesk..." -ForegroundColor Yellow
     Start-Process $anydeskPath -ArgumentList "/silent" -Wait
-    Write-Host "✅ AnyDesk instalado
+    Write-Host "✅ AnyDesk instalado correctamente." -ForegroundColor Green
+}
+catch {
+    Write-Host "❌ Error al instalar AnyDesk: $_" -ForegroundColor Red
+}
+
+# 🔽 Instalar Nitro Pro desde GitHub
+$nitroUrl = "https://github.com/Fortu27/autoinstalador_windows/releases/download/v1.0.0/Nitro.Pro.10.5.7.32.-.x64.exe"
+$nitroPath = "$env:TEMP\nitro_installer.exe"
+
+Write-Host "`n📥 Descargando Nitro Pro desde GitHub..." -ForegroundColor Cyan
+try {
+    Invoke-WebRequest -Uri $nitroUrl -OutFile $nitroPath
+    Write-Host "🚀 Ejecutando instalador de Nitro Pro..." -ForegroundColor Yellow
+    Start-Process $nitroPath -ArgumentList "/quiet" -Wait
+    Write-Host "✅ Nitro Pro instalado correctamente." -ForegroundColor Green
+}
+catch {
+    Write-Host "❌ Error al instalar Nitro Pro: $_" -ForegroundColor Red
+}
 
 
